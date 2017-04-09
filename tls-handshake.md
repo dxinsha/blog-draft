@@ -41,7 +41,7 @@ DHE_RSA握手过程说明：
 3. "Server Key Exchange"，服务端挑选一个server-DH参数(g<sup>a</sup>)，发送给客户端，并且包含私钥对内容的签名，客户端可用第2步证书中的公钥验证内容未被篡改。
 4. "Client Key Exchange"，客户端挑选一个client-DH参数(g<sup>b</sup>)，发送给服务端。
 
-第4步后，双方都能计算出premaster secret(g<sup>ab</sup>)，从而得到master secret以及session key。在这种方式下，服务器私钥只在第3步中签名使用，哪怕泄漏，两个DH参数也不会被破解。  
+第4步后，双方都能计算出premaster secret(g<sup>ab</sup>)，从而得到master secret以及session key。在这种方式下，服务器私钥只在第3步中签名使用，哪怕泄漏，通讯双方的秘密（a、b）也不会泄漏。  
 
 提到TLS握手，大部分网上文章讲的都是RSA方式，但现实中单纯使用RSA握手过程的TLS几乎没有，更多的应该是DHE_RSA或ECDHE_RSA，ECDHE_RSA原理与DHE_RSA区别不大，只是借助椭圆曲线(Elliptic Curve)减少计算量，提高性能。  
   
