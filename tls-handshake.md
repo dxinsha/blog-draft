@@ -43,10 +43,6 @@ DHE_RSA握手过程说明：
 
 第4步后，双方都能计算出premaster secret(g<sup>ab</sup>)，从而得到master secret以及session key。在这种方式下，服务器私钥只在第3步中签名使用，哪怕泄漏，两个DH参数也不会被破解。  
 
-虽然网上大部分文章讲LTS握手都是第一种RSA方式，但现实中单纯使用RSA握手的TLS几乎没有。使用最多的应该是ECDHE_RSA，原理与DHE_RSA无大区别，借助椭圆曲线(Elliptic Curve)减少计算量，优化了性能。  
+提到TLS握手，大部分网上文章讲的都是RSA方式，但现实中单纯使用RSA握手过程的TLS几乎没有，更多的应该是DHE_RSA或ECDHE_RSA，ECDHE_RSA原理与DHE_RSA区别不大，只是借助椭圆曲线(Elliptic Curve)减少计算量，提高性能。  
   
 tips: 通过chrome调试窗口"Security"标签页，可以看到握手过程的具体算法，如："a strong key exchange (ECDHE_RSA with P-256)"。  
-
-待确认：
--   server-DH参数应临时生成，保证不同会话之间安全性不会相互影响，但服务器和客户端可能为追求性能而缓存DH参数，从而导致不同会话的安全性。  
--   除了DHE_RSA，还有一种DH_RSA握手过程，server-DH参数固定在服务器私钥中，一旦私钥泄漏，之前的流量都可解密，不具有前向安全性。  
