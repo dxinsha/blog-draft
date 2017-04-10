@@ -47,5 +47,5 @@ DHE_RSA握手过程说明：
   
 tips: 通过chrome调试窗口"Security"标签页，可以看到握手过程的具体算法，如："a strong key exchange (ECDHE_RSA with P-256)"。  
 
-参考资源：
--   [Keyless SSL: The Nitty Gritty Technical Details](https://blog.cloudflare.com/keyless-ssl-the-nitty-gritty-technical-details/)
+> 参考资源：
+> -   [Keyless SSL: The Nitty Gritty Technical Details](https://blog.cloudflare.com/keyless-ssl-the-nitty-gritty-technical-details/){:target="_blank"}
