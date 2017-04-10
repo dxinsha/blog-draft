@@ -1,5 +1,5 @@
 # TLS握手过程
-服务器与客户端商议通信密钥的过程称为TLS握手，在握手阶段，通信内容虽然都是明文，但最终要保证所商量的结果只有客户端和服务端知道，其他中间节点无从得知。  
+服务器与客户端商议通信密钥的过程称为TLS握手，在握手阶段，通信内容虽然都是明文，但要保证最终商量的密钥只有客户端和服务器知道，其他中间节点无从得知。  
 
 ## RSA握手过程
 ![](https://blog.cloudflare.com/content/images/2014/Sep/ssl_handshake_rsa.jpg)
@@ -14,10 +14,10 @@ RSA握手过程说明：
 masterSecret = generateMasterSecret(R1, R2, premasterSecret);
 sessionKey = sessionKeyFrom(masterSecret);
 ```  
-第3步，premaster secret由客户端使用公钥加密后发送，拥有私钥的服务器才能解密，所以最终只有客户端与服务端能生成一致的master secret。上图中session key是从master serect中派生出来用做对称加密算法的密钥，握手阶段结束后，通信内容开始使用密钥加密并签名，确保有同样知道密钥的人才能解密内容，从而避免被窃听和篡改的风险。  
+第3步，premaster secret由客户端使用公钥加密后发送，拥有私钥的服务器才能解密，所以最终只有客户端与服务端能生成一致的master secret。图中最后的session key是从master serect中派生出来用做对称加密算法的密钥，握手阶段结束后，通信内容开始使用密钥加密并签名，确保有同样知道密钥的人才能解密内容，从而避免被窃听和篡改的风险。  
 
 ## 安全问题  
-上述握手过程，在私钥没有泄漏且证书是可信的前提下，的确能避免通信内容被窃听或篡改。但是可能存在一种情况：  
+上述握手过程，在私钥没有泄漏且证书是可信的前提下，的确能避免通信内容被窃听或篡改。但可能存在一种情况：  
 
 > 通信过程中，客户端和服务器之间的某个网络节点，将所有与服务器相关通信内容（TCP报文）在本地保存一份副本。在当时，由于不知道服务器私钥，无法破解被加密的premaster secret，从而不能解密通信内容。很久以后的某天，服务器的私钥泄漏，导致加密的premaster secret被破解，通信内容被解密，从而引发信息泄漏。  
 
@@ -46,3 +46,6 @@ DHE_RSA握手过程说明：
 提到TLS握手，大部分网上文章讲的都是RSA方式，但现实中单纯使用RSA握手过程的TLS几乎没有，更多的应该是DHE_RSA或ECDHE_RSA，ECDHE_RSA原理与DHE_RSA区别不大，只是借助椭圆曲线(Elliptic Curve)减少计算量，提高性能。  
   
 tips: 通过chrome调试窗口"Security"标签页，可以看到握手过程的具体算法，如："a strong key exchange (ECDHE_RSA with P-256)"。  
+
+参考资源：
+-   [Keyless SSL: The Nitty Gritty Technical Details](https://blog.cloudflare.com/keyless-ssl-the-nitty-gritty-technical-details/)
